@@ -1,12 +1,40 @@
-import { ArrowDown2, ArrowLeft2, ArrowRight, ArrowRight2 } from "iconsax-react";
+"use client";
+import {
+  ArrowDown2,
+  ArrowLeft2,
+  ArrowRight,
+  ArrowRight2,
+  HambergerMenu,
+} from "iconsax-react";
+import { useRef } from "react";
 
 export default function Home() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: -720, // Taille d'une carte (ou ajustez selon vos besoins)
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: 720, // Taille d'une carte (ou ajustez selon vos besoins)
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div>
-      <div className="bg-[url('/Hero.png')] bg-cover w-full flex flex-col bg-no-repeat pb-[80px]">
-        <div className="flex px-[60px] py-10 justify-between w-full items-center">
+      <div className="bg-[url('/Hero.png')] bg-center bg-cover w-full flex flex-col bg-no-repeat pb-[80px]">
+        <div className="flex lg:px-[60px] md:px-[40px] px-[20px] py-10 justify-between w-full items-center">
           <img src="/logo.svg" alt="" />
-          <div className="flex items-center gap-8 text-base">
+          <div className="hidden lg:flex items-center gap-8 text-base">
             <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
               Home
             </span>
@@ -22,22 +50,31 @@ export default function Home() {
             </span>
           </div>
           <div className="flex items-center gap-8">
-            <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
-              Log in
-            </span>
-            <button className="bg-[#F83E3E] transition-all ease-in-out duration-300 py-3 px-8 rounded-full hover:bg-[#F83E3E]/80">
-              Sign Up
-            </button>
+            <div className="hidden sm:flex items-center gap-8">
+              <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
+                Log in
+              </span>
+              <button className="bg-[#F83E3E] transition-all ease-in-out duration-300 py-3 px-8 rounded-full hover:bg-[#F83E3E]/80">
+                Sign Up
+              </button>
+            </div>
+
+            <div className="flex lg:hidden justify-center items-center rounded-sm cursor-pointer border size-[30]">
+              <HambergerMenu color="#fff" size={25} />
+            </div>
           </div>
         </div>
-        <div className="flex items-end gap-[100px] w-full px-[60px] py-[180px]">
-          <div className="flex flex-col gap-[50px] w-[70%]">
-            <div className="flex flex-col gap-8">
-              <span className="text-[92px] leading-none font-bold">
-                Human - Crafted
-              </span>
-              <span className="text-[92px] leading-none flex gap-8 font-bold">
-                Application <img src="/attention.svg" alt="" />
+        <div className="flex flex-col lg:flex-row items-center lg:items-end gap-[30px] xl:gap-[100px] w-full lg:px-[60px] md:px-[40px] px-[20px] py-[30px] sm:py-[60px] md:py-[100px] lg:py-[180px]">
+          <div className="flex flex-col gap-[50px] items-center text-center lg:text-start lg:items-start lg:w-[70%]">
+            <div className="flex text-[40px] sm:text-[52px] md:text-[72px] xl:text-[76px] 2xl:text-[92px] flex-col gap-4 md:gap-8">
+              <span className=" leading-none font-bold">Human - Crafted</span>
+              <span className=" leading-none flex gap-2 self-center lg:self-start sm:gap-8 font-bold">
+                Application{" "}
+                <img
+                  src="/attention.svg"
+                  className="size-[60px] md:size-[80px]"
+                  alt=""
+                />
               </span>
             </div>
             <div className="flex items-center gap-4">
@@ -47,21 +84,21 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-[50px] w-[30%] ">
+          <div className="flex flex-col text-center items-center lg:items-start lg:text-start gap-[50px] lg:w-[40%] xl:w-[35%] ">
             <span>
               Our applications are crafted by real people who understand the
               nuances of personalization and uniqueness. This ensures your job
               applications stand out with authenticity and human touch.
             </span>
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-10 ">
               <div className="flex flex-col gap-1">
-                <span className="text-[#F83E3E] font-bold text-[52px]">
+                <span className="text-[#F83E3E] font-bold text-[36px] md:text-[40px] xl:text-[48px] 2xl:text-[52px]">
                   100k +
                 </span>
                 <span>Applications sent</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="text-[#F83E3E] font-bold text-[52px]">
+                <span className="text-[#F83E3E] font-bold text-[36px] md:text-[40px] xl:text-[48px] 2xl:text-[52px]">
                   95 %
                 </span>
                 <span>Interviews Called</span>
@@ -69,11 +106,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className=" px-[60px] flex items-center justify-between w-full">
+        <div className=" lg:px-[60px] md:px-[40px] px-[20px]  flex flex-col gap-5 lg:flex-row items-center justify-between w-full">
           <span className="uppercase text-[18px]">
             Personalized applications
           </span>
-          <div className="w-[581px] bg-[#ffffff3a] border items-center pl-8 pr-[6px] py-[6px] border-[#fff]/70 rounded-full h-[68px] justify-between flex ">
+          <div className=" w-full sm:w-[450px] lg:w-[400px] xl:w-[581px] bg-[#ffffff3a] border items-center pl-8 pr-[6px] py-[6px] border-[#fff]/70 rounded-full h-[68px] justify-between flex ">
             <input
               type="text"
               color="#fff"
@@ -91,12 +128,12 @@ export default function Home() {
       </div>
       <div className="bg-[#000000] flex flex-col gap-[80px] py-[80px] ">
         <div className="flex flex-col ">
-          <div className="flex w-full justify-between items-center px-[60px]">
+          <div className="flex md:flex-row flex-col gap-4 w-full text-center md:text-start md:justify-between items-center lg:px-[60px] md:px-[40px] px-[20px]">
             <div className="flex flex-col gap-2">
               <span className="text-[24px] font-bold  ">
                 Just graduating? We can help you
               </span>
-              <span className="text-[#6A6B6C] w-[70%]">
+              <span className="text-[#6A6B6C] md:w-[70%]">
                 We can help you submit job applications on behalf of you so you
                 stand out from the crowd
               </span>
@@ -105,10 +142,12 @@ export default function Home() {
               REGISTER
             </button>
           </div>
-          <div className="flex gap-10 items-center pt-[80px] pl-[60px] pb-[40px] scrollbar-hide overflow-x-scroll">
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-10 items-center pt-[80px] lg:pl-[60px] md:pl-[40px] pl-[20px] pb-[40px] scrollbar-hide overflow-x-scroll">
             {Array.from({ length: 9 }).map((em, idx) => (
               <div key={idx} className="">
-                <div className="relative  w-[360px] h-[450px]   overflow-hidden">
+                <div className="relative w-[300px] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br rounded-[20px] shadow-inner border-[#20235bb3] border from-[#20235bb3] from-20% to-[#070921b8] to-82%">
                     <div className="relative p-6 pb-12 z-10 flex flex-col h-full justify-between w-full text-white">
                       <div className="flex gap-2 w-full pb-6  border-b border-[#20235bb3] items-center">
@@ -132,29 +171,33 @@ export default function Home() {
             ))}
             <div></div>
           </div>
-          <div className="flex w-full justify-between items-center px-[60px]">
+          <div className="flex w-full justify-between items-center lg:px-[60px] md:px-[40px] px-[20px]">
             <div className="flex flex-nowrap items-center gap-2">
               <span>Show all services</span>
               <ArrowRight color="#fff" size={15} />
             </div>
 
             <div className="flex gap-2">
-              <button className="size-[50px] flex border border-[#6C6A6A] rounded-full  shadow-inner items-center justify-center">
+              <button
+                onClick={scrollLeft}
+                className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center">
                 <ArrowLeft2 size={15} color="#fff" />
               </button>
-              <button className="size-[50px] flex border border-[#6C6A6A] rounded-full  shadow-inner items-center justify-center">
+              <button
+                onClick={scrollRight}
+                className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center">
                 <ArrowRight2 size={15} color="#fff" />
               </button>
             </div>
           </div>
         </div>
-        <div className="flex w-full px-[60px]">
-          <div className="flex w-full flex-col gap-[32px] rounded-[16px] items-center justify-center p-[64px] bg-gradient-to-tr from-[#3599fd73] from-10% via-[#1B243C] via-80% to-[#3599fd73] ">
+        <div className="flex w-full lg:px-[60px] md:px-[40px] px-[20px]">
+          <div className="flex w-full flex-col gap-[32px] rounded-[16px] text-center items-center justify-center p-[24px] md:p-[64px] bg-gradient-to-tr from-[#3599fd73] from-10% via-[#1B243C] via-80% to-[#3599fd73] ">
             <span className="font-semibold text-[36px]">
               Get Your 100 Free Applications
             </span>
             <span>Join with the users already growing with WeApply</span>
-            <div className="w-[581px] bg-[#ffffff3a] border items-center pl-8 pr-[6px] py-[6px] border-[#fff]/70 rounded-full h-[68px] justify-between flex ">
+            <div className="w-full lg:w-[581px] bg-[#ffffff3a] border items-center pl-8 pr-[6px] py-[6px] border-[#fff]/70 rounded-full h-[68px] justify-between flex ">
               <input
                 type="text"
                 color="#fff"
@@ -168,11 +211,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex w-full px-[60px]">
-        <div className="flex  border-t border-[#6C6A6A] py-10 justify-between w-full items-center">
-          <div className="flex items-center gap-[60px]">
+      <div className="flex w-full lg:px-[60px] md:px-[40px] px-[20px]">
+        <div className="flex flex-col gap-4 lg:flex-row border-t border-[#6C6A6A] py-10 justify-between w-full items-center">
+          <div className="flex flex-col  md:flex-row items-center gap-4 md:gap-[60px]">
             <img src="/logo.svg" alt="" />
-            <div className="flex items-center gap-8 text-base">
+            <div className="flex sm:flex-row flex-col items-center gap-4 sm:gap-8 text-base">
               <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
                 Home
               </span>
