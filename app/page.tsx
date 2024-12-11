@@ -4,17 +4,31 @@ import {
   ArrowLeft2,
   ArrowRight,
   ArrowRight2,
+  CloseCircle,
   HambergerMenu,
 } from "iconsax-react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [widthScroll, setWidthScroll] = useState(720);
+  const [isShow, setShow] = useState(false);
+
+  useEffect(() => {
+    const scroll = () => {
+      if (window.innerWidth < 768) {
+        setWidthScroll(window.innerWidth);
+      }
+    };
+
+    scroll();
+    console.log(window.innerWidth);
+  }, [window.innerWidth]);
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: -720, // Taille d'une carte (ou ajustez selon vos besoins)
+        left: -widthScroll, // Taille d'une carte (ou ajustez selon vos besoins)
         behavior: "smooth",
       });
     }
@@ -23,7 +37,7 @@ export default function Home() {
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: 720, // Taille d'une carte (ou ajustez selon vos besoins)
+        left: widthScroll, // Taille d'une carte (ou ajustez selon vos besoins)
         behavior: "smooth",
       });
     }
@@ -32,7 +46,7 @@ export default function Home() {
   return (
     <div>
       <div className="bg-[url('/Hero.png')] bg-center bg-cover w-full flex flex-col bg-no-repeat pb-[80px]">
-        <div className="flex lg:px-[60px] md:px-[40px] px-[20px] py-10 justify-between w-full items-center">
+        <div className="flex lg:px-[60px] md:px-[40px] px-[20px] py-4 justify-between w-full items-center">
           <img src="/logo.svg" alt="" />
           <div className="hidden lg:flex items-center gap-8 text-base">
             <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
@@ -59,14 +73,38 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="flex lg:hidden justify-center items-center rounded-sm cursor-pointer border size-[30]">
+            <div
+              onClick={() => setShow(true)}
+              className="flex lg:hidden justify-center items-center rounded-sm cursor-pointer border size-[30]">
               <HambergerMenu color="#fff" size={25} />
             </div>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row items-center lg:items-end gap-[30px] xl:gap-[100px] w-full lg:px-[60px] md:px-[40px] px-[20px] py-[30px] sm:py-[60px] md:py-[100px] lg:py-[180px]">
+        {isShow && (
+          <div className="grid grid-cols-[0.45fr_1.65fr] bg-[#5150509c] fixed right-0 top-0 w-full h-full z-[1000]">
+            <div className="px-4 py-16 z-20 " onClick={() => setShow(false)}>
+              <CloseCircle size="32" color="#fff" />
+            </div>
+            <div className=" flex flex-col text-[#fff] gap-[24px] right-0  top-0 bg-neutral-900  h-full px-8 py-12 pb-2 rounded-s-2xl">
+              <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
+                Home
+              </span>
+              <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
+                How it works
+              </span>
+              <div className="flex items-center gap-2 text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
+                <span>About</span>
+                <ArrowDown2 size={15} color="white" />
+              </div>
+              <span className="text-[#FAFAFA]/70 hover:text-[#FAFAFA] cursor-pointer">
+                Support
+              </span>
+            </div>
+          </div>
+        )}
+        <div className="flex flex-col lg:flex-row items-center lg:items-end gap-[30px] xl:gap-[100px] w-full lg:px-[60px] md:px-[40px] px-[20px] py-[30px] sm:py-[60px] md:py-[100px] lg:py-[120px]">
           <div className="flex flex-col gap-[50px] items-center text-center lg:text-start lg:items-start lg:w-[70%]">
-            <div className="flex text-[40px] sm:text-[52px] md:text-[72px] xl:text-[76px] 2xl:text-[92px] flex-col gap-4 md:gap-8">
+            <div className="flex text-[40px] sm:text-[52px] md:text-[72px] xl:text-[76px] 2xl:text-[84px] flex-col gap-4 md:gap-8">
               <span className=" leading-none font-bold">Human - Crafted</span>
               <span className=" leading-none flex gap-2 self-center lg:self-start sm:gap-8 font-bold">
                 Application{" "}
@@ -147,7 +185,8 @@ export default function Home() {
             className="flex gap-10 items-center pt-[80px] lg:pl-[60px] md:pl-[40px] pl-[20px] pb-[40px] scrollbar-hide overflow-x-scroll">
             {Array.from({ length: 9 }).map((em, idx) => (
               <div key={idx} className="">
-                <div className="relative w-[300px] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden">
+                <div
+                  className={`" relative w-[90vw] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden "`}>
                   <div className="absolute inset-0 bg-gradient-to-br rounded-[20px] shadow-inner border-[#20235bb3] border from-[#20235bb3] from-20% to-[#070921b8] to-82%">
                     <div className="relative p-6 pb-12 z-10 flex flex-col h-full justify-between w-full text-white">
                       <div className="flex gap-2 w-full pb-6  border-b border-[#20235bb3] items-center">
