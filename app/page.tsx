@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
   ArrowDown2,
@@ -7,39 +8,38 @@ import {
   CloseCircle,
   HambergerMenu,
 } from "iconsax-react";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 
 export default function Home() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [widthScroll, setWidthScroll] = useState(720);
+  
   const [isShow, setShow] = useState(false);
 
-  useEffect(() => {
-    const scroll = () => {
-      if (window.innerWidth < 768) {
-        setWidthScroll(window.innerWidth);
-      }
-    };
+  const containerRef = useRef(null); 
+  const itemsRef = useRef([]); 
+  const [currentIndex, setCurrentIndex] = useState(0); 
 
-    scroll();
-    console.log(window.innerWidth);
-  }, [window.innerWidth]);
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -widthScroll, // Taille d'une carte (ou ajustez selon vos besoins)
-        behavior: "smooth",
+  // Fonction pour défiler vers un élément donné par index
+  const scrollToIndex = (index: any) => {
+    if (itemsRef.current[index] && containerRef.current) {
+      const targetItem = itemsRef.current[index];
+      containerRef.current.scrollTo({
+        left: targetItem.offsetLeft - 30, // Défiler horizontalement
+        behavior: "smooth", // Animation douce
       });
+      setCurrentIndex(index); // Met à jour l'index actuel
     }
   };
 
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: widthScroll, // Taille d'une carte (ou ajustez selon vos besoins)
-        behavior: "smooth",
-      });
+  // Gestion des boutons "Suivant" et "Précédent"
+  const handleNext = () => {
+    if (currentIndex < itemsRef.current.length - 1) {
+      scrollToIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      scrollToIndex(currentIndex - 1);
     }
   };
 
@@ -181,10 +181,13 @@ export default function Home() {
             </button>
           </div>
           <div
-            ref={scrollContainerRef}
+            ref={containerRef}
             className="flex gap-10 items-center pt-[80px] lg:pl-[60px] md:pl-[40px] pl-[20px] pb-[40px] scrollbar-hide overflow-x-scroll">
             {Array.from({ length: 9 }).map((em, idx) => (
-              <div key={idx} className="">
+              <div
+                key={idx}
+                ref={(el) => (itemsRef.current[idx] = el)}
+                className="">
                 <div
                   className={`" relative w-[90vw] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden "`}>
                   <div className="absolute inset-0 bg-gradient-to-br rounded-[20px] shadow-inner border-[#20235bb3] border from-[#20235bb3] from-20% to-[#070921b8] to-82%">
@@ -218,12 +221,14 @@ export default function Home() {
 
             <div className="flex gap-2">
               <button
-                onClick={scrollLeft}
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
                 className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center">
                 <ArrowLeft2 size={15} color="#fff" />
               </button>
               <button
-                onClick={scrollRight}
+                onClick={handleNext}
+                disabled={currentIndex === itemsRef.current.length - 1}
                 className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center">
                 <ArrowRight2 size={15} color="#fff" />
               </button>
