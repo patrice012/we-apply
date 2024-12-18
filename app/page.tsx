@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
@@ -18,15 +19,15 @@ export default function Home() {
   const itemsRef = useRef([]); 
   const [currentIndex, setCurrentIndex] = useState(0); 
 
-  // Fonction pour défiler vers un élément donné par index
+
   const scrollToIndex = (index: any) => {
     if (itemsRef.current[index] && containerRef.current) {
       const targetItem = itemsRef.current[index];
-      containerRef.current.scrollTo({
-        left: targetItem.offsetLeft - 30, // Défiler horizontalement
-        behavior: "smooth", // Animation douce
+      (containerRef.current as any).scrollTo({
+        left: (targetItem as any).offsetLeft - 30, 
+        behavior: "smooth", 
       });
-      setCurrentIndex(index); // Met à jour l'index actuel
+      setCurrentIndex(index); 
     }
   };
 
@@ -186,7 +187,7 @@ export default function Home() {
             {Array.from({ length: 9 }).map((em, idx) => (
               <div
                 key={idx}
-                ref={(el) => (itemsRef.current[idx] = el)}
+                ref={(el) => (itemsRef.current[idx] = el as never)}
                 className="">
                 <div
                   className={`" relative w-[90vw] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden "`}>
