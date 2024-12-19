@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
@@ -191,7 +192,7 @@ export default function Home() {
             {Array.from({ length: 9 }).map((em, idx) => (
               <div
                 key={idx}
-                ref={(el) => (itemsRef.current[idx] = el)}
+                ref={(el) => (itemsRef.current[idx] = el as never)}
                 className=""
               >
                 <div
