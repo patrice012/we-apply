@@ -8,29 +8,32 @@ import {
   CloseCircle,
   HambergerMenu,
 } from "iconsax-react";
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Home() {
-  
   const [isShow, setShow] = useState(false);
 
-  const containerRef = useRef(null); 
-  const itemsRef = useRef([]); 
-  const [currentIndex, setCurrentIndex] = useState(0); 
+  // Reference to the container div
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Fonction pour défiler vers un élément donné par index
-  const scrollToIndex = (index: any) => {
+  // Reference for an array of child div elements
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Function to scroll to a specific index
+  const scrollToIndex = (index: number) => {
     if (itemsRef.current[index] && containerRef.current) {
       const targetItem = itemsRef.current[index];
       containerRef.current.scrollTo({
-        left: targetItem.offsetLeft - 30, // Défiler horizontalement
-        behavior: "smooth", // Animation douce
+        left: targetItem?.offsetLeft - 30, // Scroll horizontally
+        behavior: "smooth", // Smooth animation
       });
-      setCurrentIndex(index); // Met à jour l'index actuel
+      setCurrentIndex(index); // Update current index
     }
   };
 
-  // Gestion des boutons "Suivant" et "Précédent"
+  // Next and Previous button handlers
   const handleNext = () => {
     if (currentIndex < itemsRef.current.length - 1) {
       scrollToIndex(currentIndex + 1);
@@ -75,7 +78,8 @@ export default function Home() {
 
             <div
               onClick={() => setShow(true)}
-              className="flex lg:hidden justify-center items-center rounded-sm cursor-pointer border size-[30]">
+              className="flex lg:hidden justify-center items-center rounded-sm cursor-pointer border size-[30]"
+            >
               <HambergerMenu color="#fff" size={25} />
             </div>
           </div>
@@ -182,14 +186,17 @@ export default function Home() {
           </div>
           <div
             ref={containerRef}
-            className="flex gap-10 items-center pt-[80px] lg:pl-[60px] md:pl-[40px] pl-[20px] pb-[40px] scrollbar-hide overflow-x-scroll">
+            className="flex gap-10 items-center pt-[80px] lg:pl-[60px] md:pl-[40px] pl-[20px] pb-[40px] scrollbar-hide overflow-x-scroll"
+          >
             {Array.from({ length: 9 }).map((em, idx) => (
               <div
                 key={idx}
                 ref={(el) => (itemsRef.current[idx] = el)}
-                className="">
+                className=""
+              >
                 <div
-                  className={`" relative w-[90vw] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden "`}>
+                  className={`" relative w-[90vw] xs:w-[360px] h-[400px] xs:h-[450px]   overflow-hidden "`}
+                >
                   <div className="absolute inset-0 bg-gradient-to-br rounded-[20px] shadow-inner border-[#20235bb3] border from-[#20235bb3] from-20% to-[#070921b8] to-82%">
                     <div className="relative p-6 pb-12 z-10 flex flex-col h-full justify-between w-full text-white">
                       <div className="flex gap-2 w-full pb-6  border-b border-[#20235bb3] items-center">
@@ -223,13 +230,15 @@ export default function Home() {
               <button
                 onClick={handlePrevious}
                 disabled={currentIndex === 0}
-                className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center">
+                className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center"
+              >
                 <ArrowLeft2 size={15} color="#fff" />
               </button>
               <button
                 onClick={handleNext}
                 disabled={currentIndex === itemsRef.current.length - 1}
-                className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center">
+                className="size-[50px] flex border border-[#6C6A6A] rounded-full shadow-inner items-center justify-center"
+              >
                 <ArrowRight2 size={15} color="#fff" />
               </button>
             </div>
